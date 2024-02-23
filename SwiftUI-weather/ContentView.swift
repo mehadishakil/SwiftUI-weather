@@ -22,8 +22,7 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             
-            BackgroundView(isNight: $is_night)
-            
+            BackgroundView(isNight: is_night)
             VStack{
                 
                 CityTextView(cityName: "Gulapbag, Shibganj")
@@ -42,7 +41,9 @@ struct ContentView: View {
                     is_night.toggle()   // update is_night boolean value when clicked
                 }label: {
                     // designing the button
-                    WeatherButton(title: "Change Day Time", textColor: .blue, backgroundColor: .white)
+                    WeatherButton(title: "Change Day Time",
+                                  textColor: .blue,
+                                  backgroundColor: .white)
                 }
                 
                 Spacer()   // you can add at most 10 Views in your root views (ZStack)
@@ -69,8 +70,9 @@ struct WeatherDayView: View {
                     .font(.system(size: 16, weight: .medium, design: .default))
                     .foregroundColor(.white)
                 Image(systemName: weather.weatherImage)
-                    .renderingMode(.original)
+                    .symbolRenderingMode(.multicolor)
                     .resizable()
+                    //.foregroundStyle(.white, .yellow, .black)
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 40, height: 40)
                 Text("\(weather.dayTemperature)°")
@@ -84,12 +86,18 @@ struct WeatherDayView: View {
 
 struct BackgroundView: View {
     
-    @Binding var isNight : Bool
+    var isNight : Bool
     
     var body: some View {
-        LinearGradient(gradient: Gradient(colors: [isNight ? .black : .blue, isNight ? .gray : Color("lightBlue")]),
-                       startPoint: .topLeading, endPoint: .bottomTrailing)
-        .edgesIgnoringSafeArea(.all)
+//        LinearGradient(gradient: Gradient(colors: [isNight ? .black : .blue, isNight ? .gray : Color("lightBlue")]),
+//                       startPoint: .topLeading, endPoint: .bottomTrailing)
+//        .ignoresSafeArea(.all)
+        
+        // in app build in gradient
+        ContainerRelativeShape()
+            .fill(isNight ? Color.black.gradient : Color.blue.gradient)
+            .ignoresSafeArea()
+        
     }
 }
 
